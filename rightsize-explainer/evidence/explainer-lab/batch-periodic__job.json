@@ -1,0 +1,83 @@
+{
+  "schema": "evidence-pack/v1",
+  "generated_at": "2026-11-06T17:06:59+00:00",
+  "source": {
+    "prometheus": "http://127.0.0.1:9090",
+    "window": "3h"
+  },
+  "workload": {
+    "namespace": "explainer-lab",
+    "name": "batch-periodic",
+    "container": "job",
+    "pods_observed": 6
+  },
+  "configured": {
+    "cpu_request_cores": 0.2,
+    "cpu_limit_cores": null,
+    "memory_request_bytes": 67108864.0,
+    "memory_limit_bytes": 67108864.0
+  },
+  "observed": {
+    "coverage_seconds": 1200,
+    "active_seconds": 420,
+    "cpu_cores": {
+      "p50": 0.47957533607413966,
+      "p95": 0.5845541894444445,
+      "max": 0.5845541894444445,
+      "peak_1m": 0.9998680917853038
+    },
+    "memory_bytes": {
+      "max_working_set": 5742592.0,
+      "max_usage": 5824512.0
+    },
+    "cpu_throttle_ratio": null,
+    "restarts": 0,
+    "oom_killed_seen": false
+  },
+  "krr": {
+    "source": "krr",
+    "strategy": "simple",
+    "kind": "CronJob",
+    "settings": {
+      "history_duration": 1.0,
+      "timeframe_duration": 1.25,
+      "cpu_percentile": 95.0,
+      "memory_buffer_percentage": 15.0,
+      "points_required": 100
+    },
+    "floors": {
+      "cpu_min_cores": 0.01,
+      "mem_min_bytes": 104857600
+    },
+    "recommended": {
+      "cpu_request_cores": null,
+      "memory_request_bytes": null,
+      "memory_limit_bytes": null
+    },
+    "floor_applied": {
+      "cpu": false,
+      "memory": false
+    },
+    "info": {
+      "cpu": "Not enough data",
+      "memory": "Not enough data"
+    },
+    "severity": "UNKNOWN"
+  },
+  "candidate_krr_simple_formula": {
+    "cpu_request_cores": 0.5845541894444445,
+    "cpu_limit_cores": null,
+    "memory_request_bytes": 6603980.8,
+    "memory_limit_bytes": 6603980.8
+  },
+  "limitations": [
+    "Workload name is inferred from the pod name.",
+    "Revisions are not tracked, so samples from different releases are mixed.",
+    "Usage figures are the highest value across pods (conservative).",
+    "p50/p95/max use a 5-minute CPU rate; peak_1m uses a 1-minute rate and is still limited by the scrape interval.",
+    "No latency, error-rate or SLO data is included.",
+    "History covers about 0.3 h of the requested 3.0 h window.",
+    "Workload runs intermittently: 0.1 h of samples across a 0.3 h span; percentiles describe only the time it was running.",
+    "CPU throttling ratio unavailable: no CPU limit is enforced, or the cAdvisor throttling metrics are missing."
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "verdict/v1",
+  "policy": "lab",
+  "workload": {
+    "namespace": "explainer-lab",
+    "name": "throttled-cpu",
+    "container": "app",
+    "pods_observed": 1
+  },
+  "cpu": {
+    "current": 0.1,
+    "candidate_raw": 0.038,
+    "candidate_source": "krr",
+    "candidate_adjusted": 0.038,
+    "change_ratio": -0.62,
+    "direction": "decrease",
+    "reasons": [
+      {
+        "code": "C_THROTTLED",
+        "severity": "block",
+        "message": "CPU is throttled in 60% of periods: the container is hitting its CPU limit, so observed usage understates demand.",
+        "evidence": {
+          "observed.cpu_throttle_ratio": 0.6032407269192306
+        }
+      }
+    ],
+    "recommendation": "decrease_blocked"
+  },
+  "memory": {
+    "current": 67108864.0,
+    "candidate_raw": 4399513.6,
+    "candidate_source": "formula",
+    "candidate_adjusted": 33554432,
+    "change_ratio": -0.5,
+    "direction": "decrease",
+    "reasons": [
+      {
+        "code": "I_KRR_AT_FLOOR",
+        "severity": "info",
+        "message": "KRR's memory figure equals KRR's own minimum, so it is not based on usage; using this tool's own figure instead.",
+        "evidence": {
+          "krr.recommended.memory_request_bytes": 104857600.0,
+          "krr.floor_applied.memory": true
+        }
+      },
+      {
+        "code": "I_FLOOR",
+        "severity": "info",
+        "message": "Candidate 4Mi is below the minimum 32Mi; using the minimum.",
+        "evidence": {
+          "candidate_krr_simple_formula.memory_request_bytes": 4399513.6
+        }
+      }
+    ],
+    "recommendation": "decrease_ok"
+  }
+}

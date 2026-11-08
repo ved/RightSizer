@@ -1,0 +1,60 @@
+{
+  "schema": "explanation/v1",
+  "model": "qwen2.5-coder:14b",
+  "workload": {
+    "namespace": "explainer-lab",
+    "name": "steady-overprovisioned",
+    "container": "app",
+    "pods_observed": 2
+  },
+  "facts": [
+    "workload: steady-overprovisioned (container app, namespace explainer-lab)",
+    "history observed: 0.4 h",
+    "policy profile: lab",
+    "cpu p95 usage: 0.000 cores",
+    "cpu 1-minute peak: 0.000 cores",
+    "memory peak working set: 22Mi",
+    "memory limit: 512Mi",
+    "restarts in window: 0",
+    "oom kill seen: no",
+    "[cpu] verdict: decrease_ok",
+    "[cpu] current request: 0.500 cores",
+    "[cpu] candidate request: 0.000 cores (source: formula)",
+    "[cpu] candidate after minimum floor: 0.010 cores",
+    "[cpu] change from current: -98%",
+    "[cpu] reason I_KRR_NO_DATA (info): KRR gave no cpu recommendation (Not enough data); using this tool's own figure instead.",
+    "[cpu] reason I_FLOOR (info): Candidate 0.000 cores is below the minimum 0.010 cores; using the minimum.",
+    "[memory] verdict: decrease_ok",
+    "[memory] current request: 512Mi",
+    "[memory] candidate request: 25Mi (source: formula)",
+    "[memory] candidate after minimum floor: 32Mi",
+    "[memory] change from current: -94%",
+    "[memory] reason I_KRR_NO_DATA (info): KRR gave no memory recommendation (Not enough data); using this tool's own figure instead.",
+    "[memory] reason I_FLOOR (info): Candidate 25Mi is below the minimum 32Mi; using the minimum.",
+    "limitation: Workload name is inferred from the pod name.",
+    "limitation: Revisions are not tracked, so samples from different releases are mixed.",
+    "limitation: Usage figures are the highest value across pods (conservative).",
+    "limitation: p50/p95/max use a 5-minute CPU rate; peak_1m uses a 1-minute rate and is still limited by the scrape interval.",
+    "limitation: No latency, error-rate or SLO data is included.",
+    "limitation: History covers about 0.4 h of the requested 3.0 h window.",
+    "limitation: CPU throttling ratio unavailable: no CPU limit is enforced, or the cAdvisor throttling metrics are missing."
+  ],
+  "raw": "{\n  \"headline\": \"steady-overprovisioned: lower CPU is safe, memory must not be cut\",\n  \"cpu\": {\n    \"decision\": \"decrease_ok\",\n    \"explanation\": \"The current CPU request of 0.500 cores can be safely reduced to the minimum allowed 0.010 cores. The candidate request from the formula was 0.000 cores, which is below the minimum threshold.\"\n  },\n  \"memory\": {\n    \"decision\": \"decrease_ok\",\n    \"explanation\": \"The current memory request of 512Mi can be safely reduced to the minimum allowed 32Mi. The candidate request from the formula was 25Mi, which is below the minimum threshold.\"\n  }\n}",
+  "parsed": {
+    "headline": "steady-overprovisioned: lower CPU is safe, memory must not be cut",
+    "cpu": {
+      "decision": "decrease_ok",
+      "explanation": "The current CPU request of 0.500 cores can be safely reduced to the minimum allowed 0.010 cores. The candidate request from the formula was 0.000 cores, which is below the minimum threshold."
+    },
+    "memory": {
+      "decision": "decrease_ok",
+      "explanation": "The current memory request of 512Mi can be safely reduced to the minimum allowed 32Mi. The candidate request from the formula was 25Mi, which is below the minimum threshold."
+    }
+  },
+  "errors": [],
+  "attempts": 1,
+  "first_try_ok": true,
+  "caveats": [
+    "History covers about 0.4 h of the requested 3.0 h window."
+  ]
+}

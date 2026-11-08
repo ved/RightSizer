@@ -1,0 +1,61 @@
+{
+  "schema": "explanation/v1",
+  "model": "qwen2.5-coder:14b",
+  "workload": {
+    "namespace": "explainer-lab",
+    "name": "leaky-memory",
+    "container": "app",
+    "pods_observed": 1
+  },
+  "facts": [
+    "workload: leaky-memory (container app, namespace explainer-lab)",
+    "history observed: 0.4 h",
+    "policy profile: lab",
+    "cpu p95 usage: 0.000 cores",
+    "cpu 1-minute peak: 0.001 cores",
+    "memory peak working set: 124Mi",
+    "memory limit: 128Mi",
+    "restarts in window: 2",
+    "oom kill seen: yes",
+    "[cpu] verdict: decrease_ok",
+    "[cpu] current request: 0.020 cores",
+    "[cpu] candidate request: 0.000 cores (source: formula)",
+    "[cpu] candidate after minimum floor: 0.010 cores",
+    "[cpu] change from current: -50%",
+    "[cpu] reason I_KRR_NO_DATA (info): KRR gave no cpu recommendation (Not enough data); using this tool's own figure instead.",
+    "[cpu] reason I_FLOOR (info): Candidate 0.000 cores is below the minimum 0.010 cores; using the minimum.",
+    "[memory] verdict: increase_supported",
+    "[memory] current request: 64Mi",
+    "[memory] candidate request: 143Mi (source: formula)",
+    "[memory] change from current: +123%",
+    "[memory] reason I_KRR_NO_DATA (info): KRR gave no memory recommendation (Not enough data); using this tool's own figure instead.",
+    "[memory] reason S_OOM (support): An OOM kill was seen in the window; real demand exceeded what was measured.",
+    "[memory] reason S_NEAR_LIMIT (support): Peak working set 124Mi is 97% of the memory limit 128Mi.",
+    "[memory] reason S_USAGE_ABOVE_REQUEST (support): Peak working set 124Mi is above the request 64Mi.",
+    "limitation: Workload name is inferred from the pod name.",
+    "limitation: Revisions are not tracked, so samples from different releases are mixed.",
+    "limitation: Usage figures are the highest value across pods (conservative).",
+    "limitation: p50/p95/max use a 5-minute CPU rate; peak_1m uses a 1-minute rate and is still limited by the scrape interval.",
+    "limitation: No latency, error-rate or SLO data is included.",
+    "limitation: History covers about 0.4 h of the requested 3.0 h window.",
+    "limitation: CPU throttling ratio unavailable: no CPU limit is enforced, or the cAdvisor throttling metrics are missing."
+  ],
+  "raw": "{\n  \"headline\": \"leaky-memory: lower CPU is safe, memory must not be cut\",\n  \"cpu\": {\n    \"decision\": \"decrease_ok\",\n    \"explanation\": \"The current request of 0.020 cores can be safely decreased to 0.010 cores. The candidate request from the formula was 0.000 cores, but it was adjusted to meet the minimum floor of 0.010 cores.\"\n  },\n  \"memory\": {\n    \"decision\": \"increase_supported\",\n    \"explanation\": \"The current request of 64Mi should be increased to 143Mi. An OOM kill was seen in the window, indicating that real demand exceeded what was measured. The peak working set of 124Mi is 97% of the memory limit of 128Mi and above the current request of 64Mi.\"\n  }\n}",
+  "parsed": {
+    "headline": "leaky-memory: lower CPU is safe, memory must not be cut",
+    "cpu": {
+      "decision": "decrease_ok",
+      "explanation": "The current request of 0.020 cores can be safely decreased to 0.010 cores. The candidate request from the formula was 0.000 cores, but it was adjusted to meet the minimum floor of 0.010 cores."
+    },
+    "memory": {
+      "decision": "increase_supported",
+      "explanation": "The current request of 64Mi should be increased to 143Mi. An OOM kill was seen in the window, indicating that real demand exceeded what was measured. The peak working set of 124Mi is 97% of the memory limit of 128Mi and above the current request of 64Mi."
+    }
+  },
+  "errors": [],
+  "attempts": 1,
+  "first_try_ok": true,
+  "caveats": [
+    "History covers about 0.4 h of the requested 3.0 h window."
+  ]
+}

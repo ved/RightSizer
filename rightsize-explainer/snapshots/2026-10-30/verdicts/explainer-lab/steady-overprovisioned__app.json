@@ -1,0 +1,66 @@
+{
+  "schema": "verdict/v1",
+  "policy": "lab",
+  "workload": {
+    "namespace": "explainer-lab",
+    "name": "steady-overprovisioned",
+    "container": "app",
+    "pods_observed": 2
+  },
+  "cpu": {
+    "current": 0.5,
+    "candidate_raw": 0.0,
+    "candidate_source": "formula",
+    "candidate_adjusted": 0.01,
+    "change_ratio": -0.98,
+    "direction": "decrease",
+    "reasons": [
+      {
+        "code": "I_KRR_AT_FLOOR",
+        "severity": "info",
+        "message": "KRR's cpu figure equals KRR's own minimum, so it is not based on usage; using this tool's own figure instead.",
+        "evidence": {
+          "krr.recommended.cpu_request_cores": 0.01,
+          "krr.floor_applied.cpu": true
+        }
+      },
+      {
+        "code": "I_FLOOR",
+        "severity": "info",
+        "message": "Candidate 0.000 cores is below the minimum 0.010 cores; using the minimum.",
+        "evidence": {
+          "candidate_krr_simple_formula.cpu_request_cores": 0.0
+        }
+      }
+    ],
+    "recommendation": "decrease_ok"
+  },
+  "memory": {
+    "current": 536870912.0,
+    "candidate_raw": 26392371.2,
+    "candidate_source": "formula",
+    "candidate_adjusted": 33554432,
+    "change_ratio": -0.9375,
+    "direction": "decrease",
+    "reasons": [
+      {
+        "code": "I_KRR_AT_FLOOR",
+        "severity": "info",
+        "message": "KRR's memory figure equals KRR's own minimum, so it is not based on usage; using this tool's own figure instead.",
+        "evidence": {
+          "krr.recommended.memory_request_bytes": 104857600.0,
+          "krr.floor_applied.memory": true
+        }
+      },
+      {
+        "code": "I_FLOOR",
+        "severity": "info",
+        "message": "Candidate 25Mi is below the minimum 32Mi; using the minimum.",
+        "evidence": {
+          "candidate_krr_simple_formula.memory_request_bytes": 26392371.2
+        }
+      }
+    ],
+    "recommendation": "decrease_ok"
+  }
+}

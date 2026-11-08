@@ -1,0 +1,155 @@
+[
+  {
+    "model": "qwen2.5-coder:14b",
+    "case": "synthetic/idle-overprovisioned",
+    "seconds": 8.1,
+    "error": null,
+    "first_try_ok": true,
+    "final_ok": true,
+    "problems": []
+  },
+  {
+    "model": "qwen2.5-coder:14b",
+    "case": "synthetic/cpu-throttled",
+    "seconds": 4.2,
+    "error": null,
+    "first_try_ok": true,
+    "final_ok": true,
+    "problems": []
+  },
+  {
+    "model": "qwen2.5-coder:14b",
+    "case": "synthetic/memory-leak-oom",
+    "seconds": 7.7,
+    "error": null,
+    "first_try_ok": true,
+    "final_ok": true,
+    "problems": []
+  },
+  {
+    "model": "qwen2.5-coder:14b",
+    "case": "synthetic/bursty-cpu",
+    "seconds": 6.9,
+    "error": null,
+    "first_try_ok": true,
+    "final_ok": true,
+    "problems": []
+  },
+  {
+    "model": "qwen2.5-coder:14b",
+    "case": "synthetic/short-history",
+    "seconds": 6.4,
+    "error": null,
+    "first_try_ok": true,
+    "final_ok": true,
+    "problems": []
+  },
+  {
+    "model": "qwen2.5-coder:14b",
+    "case": "synthetic/no-usage-data",
+    "seconds": 3.8,
+    "error": null,
+    "first_try_ok": true,
+    "final_ok": true,
+    "problems": []
+  },
+  {
+    "model": "qwen2.5-coder:14b",
+    "case": "synthetic/no-request-set",
+    "seconds": 3.6,
+    "error": null,
+    "first_try_ok": true,
+    "final_ok": true,
+    "problems": []
+  },
+  {
+    "model": "qwen2.5-coder:14b",
+    "case": "synthetic/near-memory-limit",
+    "seconds": 5.4,
+    "error": null,
+    "first_try_ok": true,
+    "final_ok": true,
+    "problems": []
+  },
+  {
+    "model": "qwen2.5-coder:14b",
+    "case": "synthetic/restarts-only",
+    "seconds": 7.1,
+    "error": null,
+    "first_try_ok": true,
+    "final_ok": true,
+    "problems": []
+  },
+  {
+    "model": "qwen2.5-coder:14b",
+    "case": "synthetic/peak-blocks-cut",
+    "seconds": 5.4,
+    "error": null,
+    "first_try_ok": true,
+    "final_ok": true,
+    "problems": []
+  },
+  {
+    "model": "qwen2.5-coder:14b",
+    "case": "synthetic/tiny-difference",
+    "seconds": 4.3,
+    "error": null,
+    "first_try_ok": true,
+    "final_ok": true,
+    "problems": []
+  },
+  {
+    "model": "qwen2.5-coder:14b",
+    "case": "synthetic/production-3-days",
+    "seconds": 4.7,
+    "error": null,
+    "first_try_ok": true,
+    "final_ok": true,
+    "problems": []
+  },
+  {
+    "model": "qwen2.5-coder:14b",
+    "case": "lab/batch-periodic",
+    "seconds": 6.3,
+    "error": null,
+    "first_try_ok": true,
+    "final_ok": true,
+    "problems": []
+  },
+  {
+    "model": "qwen2.5-coder:14b",
+    "case": "lab/bursty-rare",
+    "seconds": 7.6,
+    "error": null,
+    "first_try_ok": true,
+    "final_ok": true,
+    "problems": []
+  },
+  {
+    "model": "qwen2.5-coder:14b",
+    "case": "lab/leaky-memory",
+    "seconds": 7.6,
+    "error": null,
+    "first_try_ok": true,
+    "final_ok": true,
+    "problems": []
+  },
+  {
+    "model": "qwen2.5-coder:14b",
+    "case": "lab/steady-overprovisioned",
+    "seconds": 6.2,
+    "error": null,
+    "first_try_ok": true,
+    "final_ok": true,
+    "problems": []
+  },
+  {
+    "model": "qwen2.5-coder:14b",
+    "case": "lab/throttled-cpu",
+    "seconds": 4.1,
+    "error": null,
+    "first_try_ok": true,
+    "final_ok": true,
+    "problems": []
+  }
+]

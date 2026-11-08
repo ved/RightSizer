@@ -1,0 +1,197 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: explainer-lab
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: loadgen
+  namespace: explainer-lab
+data:
+  loadgen.py: |
+    import os, time
+
+    def f(k, d):
+        return float(os.environ.get(k, d))
+
+    burn = f("BURN_MS", 0) / 1000
+    idle = f("SLEEP_MS", 1000) / 1000
+    leak = int(f("LEAK_MB_PER_MIN", 0))
+    period = f("PERIOD_S", 0)
+    peak = f("PEAK_S", 0)
+    hold = []
+    last = time.time()
+
+    def spin(sec):
+        end = time.perf_counter() + sec
+        while time.perf_counter() < end:
+            pass
+
+    while True:
+        now = time.time()
+        if period > 0:
+            if now % period < peak:
+                spin(1.0)
+            else:
+                time.sleep(1.0)
+        else:
+            if burn > 0:
+                spin(burn)
+            if idle > 0:
+                time.sleep(idle)
+        if leak > 0 and now - last >= 60:
+            hold.append(bytearray(b"x") * (leak * 1024 * 1024))
+            last = now
+---
+# Scenario 1: steady, idle service with far more requested than used (safe to cut)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: steady-overprovisioned
+  namespace: explainer-lab
+  labels: {app: steady-overprovisioned, lab/scenario: overprovisioned}
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: steady-overprovisioned}
+  template:
+    metadata:
+      labels: {app: steady-overprovisioned, lab/scenario: overprovisioned}
+    spec:
+      containers:
+        - name: app
+          image: nginx:1.27-alpine
+          resources:
+            requests: {cpu: 500m, memory: 512Mi}
+            limits: {memory: 512Mi}
+---
+# Scenario 2: low average CPU but a tight CPU limit, so it is throttled
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: throttled-cpu
+  namespace: explainer-lab
+  labels: {app: throttled-cpu, lab/scenario: throttled}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: throttled-cpu}
+  template:
+    metadata:
+      labels: {app: throttled-cpu, lab/scenario: throttled}
+    spec:
+      containers:
+        - name: app
+          image: python:3.12-alpine
+          command: ["python", "-u", "/app/loadgen.py"]
+          env:
+            - {name: BURN_MS, value: "300"}
+            - {name: SLEEP_MS, value: "700"}
+          volumeMounts:
+            - {name: code, mountPath: /app}
+          resources:
+            requests: {cpu: 100m, memory: 64Mi}
+            limits: {cpu: 100m, memory: 64Mi}
+      volumes:
+        - name: code
+          configMap: {name: loadgen}
+---
+# Scenario 3: memory grows until the limit, OOMKilled, restarts, repeats
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: leaky-memory
+  namespace: explainer-lab
+  labels: {app: leaky-memory, lab/scenario: memory-leak}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: leaky-memory}
+  template:
+    metadata:
+      labels: {app: leaky-memory, lab/scenario: memory-leak}
+    spec:
+      containers:
+        - name: app
+          image: python:3.12-alpine
+          command: ["python", "-u", "/app/loadgen.py"]
+          env:
+            - {name: BURN_MS, value: "0"}
+            - {name: SLEEP_MS, value: "1000"}
+            - {name: LEAK_MB_PER_MIN, value: "8"}
+          volumeMounts:
+            - {name: code, mountPath: /app}
+          resources:
+            requests: {cpu: 20m, memory: 64Mi}
+            limits: {memory: 128Mi}
+      volumes:
+        - name: code
+          configMap: {name: loadgen}
+---
+# Scenario 4: mostly idle, a 30 second CPU peak every 5 minutes (a p95 can miss this)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bursty-rare
+  namespace: explainer-lab
+  labels: {app: bursty-rare, lab/scenario: bursty}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: bursty-rare}
+  template:
+    metadata:
+      labels: {app: bursty-rare, lab/scenario: bursty}
+    spec:
+      containers:
+        - name: app
+          image: python:3.12-alpine
+          command: ["python", "-u", "/app/loadgen.py"]
+          env:
+            - {name: PERIOD_S, value: "300"}
+            - {name: PEAK_S, value: "30"}
+          volumeMounts:
+            - {name: code, mountPath: /app}
+          resources:
+            requests: {cpu: 50m, memory: 64Mi}
+            limits: {memory: 64Mi}
+      volumes:
+        - name: code
+          configMap: {name: loadgen}
+---
+# Scenario 5: batch job, a 3 minute CPU burn every 20 minutes (time-compressed stand-in
+# for a monthly job; real monthly jobs need a much longer observation window)
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: batch-periodic
+  namespace: explainer-lab
+  labels: {app: batch-periodic, lab/scenario: batch}
+spec:
+  schedule: "*/20 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels: {app: batch-periodic, lab/scenario: batch}
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: job
+              image: python:3.12-alpine
+              command: ["sh", "-c", "timeout 180 python -u /app/loadgen.py || true"]
+              env:
+                - {name: BURN_MS, value: "1000"}
+                - {name: SLEEP_MS, value: "0"}
+              volumeMounts:
+                - {name: code, mountPath: /app}
+              resources:
+                requests: {cpu: 200m, memory: 64Mi}
+                limits: {memory: 64Mi}
+          volumes:
+            - name: code
+              configMap: {name: loadgen}

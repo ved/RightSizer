@@ -1,0 +1,11 @@
+.DS_Store
+tmp/
+.integration-*.log
+.tools/
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+kubernetes-resource-review-mixin-task.md

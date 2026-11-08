@@ -1,0 +1,65 @@
+{
+  "schema": "verdict/v1",
+  "policy": "lab",
+  "workload": {
+    "namespace": "explainer-lab",
+    "name": "batch-periodic",
+    "container": "job",
+    "pods_observed": 18
+  },
+  "cpu": {
+    "current": 0.2,
+    "candidate_raw": 0.6125307669444444,
+    "candidate_source": "formula",
+    "candidate_adjusted": 0.6125307669444444,
+    "change_ratio": 2.062653834722222,
+    "direction": "increase",
+    "reasons": [
+      {
+        "code": "I_KRR_NO_DATA",
+        "severity": "info",
+        "message": "KRR gave no cpu recommendation (Not enough data); using this tool's own figure instead.",
+        "evidence": {
+          "krr.info.cpu": "Not enough data"
+        }
+      },
+      {
+        "code": "S_USAGE_ABOVE_REQUEST",
+        "severity": "support",
+        "message": "p95 CPU 0.613 cores is above the request 0.200 cores.",
+        "evidence": {
+          "observed.cpu_cores.p95": 0.6125307669444444,
+          "configured.cpu_request_cores": 0.2
+        }
+      }
+    ],
+    "recommendation": "increase_supported"
+  },
+  "memory": {
+    "current": 67108864.0,
+    "candidate_raw": 5614796.8,
+    "candidate_source": "formula",
+    "candidate_adjusted": 33554432,
+    "change_ratio": -0.5,
+    "direction": "decrease",
+    "reasons": [
+      {
+        "code": "I_KRR_NO_DATA",
+        "severity": "info",
+        "message": "KRR gave no memory recommendation (Not enough data); using this tool's own figure instead.",
+        "evidence": {
+          "krr.info.memory": "Not enough data"
+        }
+      },
+      {
+        "code": "I_FLOOR",
+        "severity": "info",
+        "message": "Candidate 5Mi is below the minimum 32Mi; using the minimum.",
+        "evidence": {
+          "candidate_krr_simple_formula.memory_request_bytes": 5614796.8
+        }
+      }
+    ],
+    "recommendation": "decrease_ok"
+  }
+}

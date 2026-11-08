@@ -1,0 +1,82 @@
+{
+  "schema": "verdict/v1",
+  "policy": "lab",
+  "workload": {
+    "namespace": "explainer-lab",
+    "name": "leaky-memory",
+    "container": "app",
+    "pods_observed": 1
+  },
+  "cpu": {
+    "current": 0.02,
+    "candidate_raw": 0.00014653328454180823,
+    "candidate_source": "formula",
+    "candidate_adjusted": 0.01,
+    "change_ratio": -0.5,
+    "direction": "decrease",
+    "reasons": [
+      {
+        "code": "I_KRR_NO_DATA",
+        "severity": "info",
+        "message": "KRR gave no cpu recommendation (Not enough data); using this tool's own figure instead.",
+        "evidence": {
+          "krr.info.cpu": "Not enough data"
+        }
+      },
+      {
+        "code": "I_FLOOR",
+        "severity": "info",
+        "message": "Candidate 0.000 cores is below the minimum 0.010 cores; using the minimum.",
+        "evidence": {
+          "candidate_krr_simple_formula.cpu_request_cores": 0.00014653328454180823
+        }
+      }
+    ],
+    "recommendation": "decrease_ok"
+  },
+  "memory": {
+    "current": 67108864.0,
+    "candidate_raw": 149475123.2,
+    "candidate_source": "formula",
+    "candidate_adjusted": 149475123.2,
+    "change_ratio": 1.2273529052734373,
+    "direction": "increase",
+    "reasons": [
+      {
+        "code": "I_KRR_NO_DATA",
+        "severity": "info",
+        "message": "KRR gave no memory recommendation (Not enough data); using this tool's own figure instead.",
+        "evidence": {
+          "krr.info.memory": "Not enough data"
+        }
+      },
+      {
+        "code": "S_OOM",
+        "severity": "support",
+        "message": "An OOM kill was seen in the window; real demand exceeded what was measured.",
+        "evidence": {
+          "observed.oom_killed_seen": true
+        }
+      },
+      {
+        "code": "S_NEAR_LIMIT",
+        "severity": "support",
+        "message": "Peak working set 124Mi is 97% of the memory limit 128Mi.",
+        "evidence": {
+          "observed.memory_bytes.max_working_set": 129978368.0,
+          "configured.memory_limit_bytes": 134217728.0
+        }
+      },
+      {
+        "code": "S_USAGE_ABOVE_REQUEST",
+        "severity": "support",
+        "message": "Peak working set 124Mi is above the request 64Mi.",
+        "evidence": {
+          "observed.memory_bytes.max_working_set": 129978368.0,
+          "configured.memory_request_bytes": 67108864.0
+        }
+      }
+    ],
+    "recommendation": "increase_supported"
+  }
+}

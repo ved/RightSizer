@@ -1,0 +1,82 @@
+{
+  "schema": "evidence-pack/v1",
+  "generated_at": "2026-10-29T11:10:20+00:00",
+  "source": {
+    "prometheus": "http://127.0.0.1:9090",
+    "window": "6h"
+  },
+  "workload": {
+    "namespace": "explainer-lab",
+    "name": "bursty-rare",
+    "container": "app",
+    "pods_observed": 1
+  },
+  "configured": {
+    "cpu_request_cores": 0.05,
+    "cpu_limit_cores": null,
+    "memory_request_bytes": 67108864.0,
+    "memory_limit_bytes": 67108864.0
+  },
+  "observed": {
+    "coverage_seconds": 17040,
+    "active_seconds": 17040,
+    "cpu_cores": {
+      "p50": 0.10407533929485152,
+      "p95": 0.1086463283873877,
+      "max": 0.10997350857226737,
+      "peak_1m": 0.6629679706397528
+    },
+    "memory_bytes": {
+      "max_working_set": 11489280.0,
+      "max_usage": 12152832.0
+    },
+    "cpu_throttle_ratio": null,
+    "restarts": 0,
+    "oom_killed_seen": false
+  },
+  "krr": {
+    "source": "krr",
+    "strategy": "simple",
+    "kind": "Deployment",
+    "settings": {
+      "history_duration": 4.0,
+      "timeframe_duration": 1.25,
+      "cpu_percentile": 95.0,
+      "memory_buffer_percentage": 15.0,
+      "points_required": 100
+    },
+    "floors": {
+      "cpu_min_cores": 0.01,
+      "mem_min_bytes": 104857600
+    },
+    "recommended": {
+      "cpu_request_cores": 0.409,
+      "memory_request_bytes": 104857600.0,
+      "memory_limit_bytes": 104857600.0
+    },
+    "floor_applied": {
+      "cpu": false,
+      "memory": true
+    },
+    "info": {
+      "cpu": null,
+      "memory": null
+    },
+    "severity": "WARNING"
+  },
+  "candidate_krr_simple_formula": {
+    "cpu_request_cores": 0.1086463283873877,
+    "cpu_limit_cores": null,
+    "memory_request_bytes": 13212671.999999998,
+    "memory_limit_bytes": 13212671.999999998
+  },
+  "limitations": [
+    "Workload name is inferred from the pod name.",
+    "Revisions are not tracked, so samples from different releases are mixed.",
+    "Usage figures are the highest value across pods (conservative).",
+    "p50/p95/max use a 5-minute CPU rate; peak_1m uses a 1-minute rate and is still limited by the scrape interval.",
+    "No latency, error-rate or SLO data is included.",
+    "History covers about 4.7 h of the requested 6.0 h window.",
+    "CPU throttling ratio unavailable: no CPU limit is enforced, or the cAdvisor throttling metrics are missing."
+  ]
+}

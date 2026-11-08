@@ -1,0 +1,248 @@
+{
+  "scans": [
+    {
+      "object": {
+        "cluster": "kind-resource-review-mixin",
+        "name": "bursty-rare",
+        "container": "app",
+        "namespace": "explainer-lab",
+        "kind": "Deployment",
+        "allocations": {
+          "requests": {
+            "cpu": 0.05,
+            "memory": 67108864.0
+          },
+          "limits": {
+            "cpu": null,
+            "memory": 67108864.0
+          }
+        }
+      },
+      "recommended": {
+        "requests": {
+          "cpu": {
+            "value": 0.409,
+            "severity": "GOOD"
+          },
+          "memory": {
+            "value": 104857600.0,
+            "severity": "GOOD"
+          }
+        },
+        "limits": {
+          "cpu": {
+            "value": null,
+            "severity": "GOOD"
+          },
+          "memory": {
+            "value": 104857600.0,
+            "severity": "GOOD"
+          }
+        },
+        "info": {
+          "cpu": null,
+          "memory": null
+        }
+      },
+      "severity": "WARNING"
+    },
+    {
+      "object": {
+        "cluster": "kind-resource-review-mixin",
+        "name": "leaky-memory",
+        "container": "app",
+        "namespace": "explainer-lab",
+        "kind": "Deployment",
+        "allocations": {
+          "requests": {
+            "cpu": 0.02,
+            "memory": 67108864.0
+          },
+          "limits": {
+            "cpu": null,
+            "memory": 134217728.0
+          }
+        }
+      },
+      "recommended": {
+        "requests": {
+          "cpu": {
+            "value": 0.01,
+            "severity": "GOOD"
+          },
+          "memory": {
+            "value": 149946368.0,
+            "severity": "GOOD"
+          }
+        },
+        "limits": {
+          "cpu": {
+            "value": null,
+            "severity": "GOOD"
+          },
+          "memory": {
+            "value": 149946368.0,
+            "severity": "GOOD"
+          }
+        },
+        "info": {
+          "cpu": null,
+          "memory": null
+        }
+      },
+      "severity": "GOOD"
+    },
+    {
+      "object": {
+        "cluster": "kind-resource-review-mixin",
+        "name": "steady-overprovisioned",
+        "container": "app",
+        "namespace": "explainer-lab",
+        "kind": "Deployment",
+        "allocations": {
+          "requests": {
+            "cpu": 0.5,
+            "memory": 536870912.0
+          },
+          "limits": {
+            "cpu": null,
+            "memory": 536870912.0
+          }
+        }
+      },
+      "recommended": {
+        "requests": {
+          "cpu": {
+            "value": 0.01,
+            "severity": "GOOD"
+          },
+          "memory": {
+            "value": 104857600.0,
+            "severity": "GOOD"
+          }
+        },
+        "limits": {
+          "cpu": {
+            "value": null,
+            "severity": "GOOD"
+          },
+          "memory": {
+            "value": 104857600.0,
+            "severity": "GOOD"
+          }
+        },
+        "info": {
+          "cpu": null,
+          "memory": null
+        }
+      },
+      "severity": "WARNING"
+    },
+    {
+      "object": {
+        "cluster": "kind-resource-review-mixin",
+        "name": "throttled-cpu",
+        "container": "app",
+        "namespace": "explainer-lab",
+        "kind": "Deployment",
+        "allocations": {
+          "requests": {
+            "cpu": 0.1,
+            "memory": 67108864.0
+          },
+          "limits": {
+            "cpu": 0.1,
+            "memory": 67108864.0
+          }
+        }
+      },
+      "recommended": {
+        "requests": {
+          "cpu": {
+            "value": 0.038,
+            "severity": "GOOD"
+          },
+          "memory": {
+            "value": 104857600.0,
+            "severity": "GOOD"
+          }
+        },
+        "limits": {
+          "cpu": {
+            "value": null,
+            "severity": "GOOD"
+          },
+          "memory": {
+            "value": 104857600.0,
+            "severity": "GOOD"
+          }
+        },
+        "info": {
+          "cpu": null,
+          "memory": null
+        }
+      },
+      "severity": "WARNING"
+    },
+    {
+      "object": {
+        "cluster": "kind-resource-review-mixin",
+        "name": "batch-periodic",
+        "container": "job",
+        "namespace": "explainer-lab",
+        "kind": "CronJob",
+        "allocations": {
+          "requests": {
+            "cpu": 0.2,
+            "memory": 67108864.0
+          },
+          "limits": {
+            "cpu": null,
+            "memory": 67108864.0
+          }
+        }
+      },
+      "recommended": {
+        "requests": {
+          "cpu": {
+            "value": "?",
+            "severity": "UNKNOWN"
+          },
+          "memory": {
+            "value": "?",
+            "severity": "UNKNOWN"
+          }
+        },
+        "limits": {
+          "cpu": {
+            "value": "?",
+            "severity": "GOOD"
+          },
+          "memory": {
+            "value": "?",
+            "severity": "UNKNOWN"
+          }
+        },
+        "info": {
+          "cpu": "Not enough data",
+          "memory": "Not enough data"
+        }
+      },
+      "severity": "UNKNOWN"
+    }
+  ],
+  "strategy": {
+    "name": "simple",
+    "settings": {
+      "history_duration": 4.0,
+      "timeframe_duration": 1.25,
+      "cpu_percentile": 95.0,
+      "memory_buffer_percentage": 15.0,
+      "points_required": 100
+    }
+  },
+  "config": {
+    "cpu_min_value": 10,
+    "memory_min_value": 100
+  }
+}
